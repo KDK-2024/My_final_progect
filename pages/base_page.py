@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+from .locators import MainPageLocators
 
 class BasePage():
     def __init__(self, browser, url, timeout=10):
@@ -12,7 +12,7 @@ class BasePage():
 
     def is_element_present(self, selector, s):
         try:
-            self.browser.find_element(By.CSS_SELECTOR, "#login_link")
+            self.browser.find_element(*MainPageLocators.LOGIN_LINK)
         except NoSuchElementException:
             return False
         return True

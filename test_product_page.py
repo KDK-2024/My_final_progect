@@ -1,8 +1,11 @@
-from pages.product_page import ProductPage
-import time
+import pytest
 
-def test_guest_can_add_product_to_basket(browser):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+from pages.product_page import ProductPage
+
+@pytest.mark.parametrize('promo_number', ["0", "1", "2", "3", "4", "5",
+                                          "6", pytest.param("7", marks=pytest.mark.xfail), "8", "9"])
+def test_guest_can_add_product_to_basket(browser, promo_number):
+    link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{promo_number}"
     page = ProductPage(browser, link)       # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес
     page.open()                             # открываем страницу
     product_name = page.get_product_name()

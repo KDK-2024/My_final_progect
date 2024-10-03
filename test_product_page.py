@@ -1,5 +1,6 @@
 import pytest
 
+from pages.locators import ProductPageLocators
 from pages.product_page import ProductPage
 
 @pytest.mark.parametrize('promo_number', ["0", "1", "2", "3", "4", "5",
@@ -20,3 +21,25 @@ def test_guest_can_add_product_to_basket(browser, promo_number):
     print("Сравнили имя товара")
     page.should_be_correct_price(product_price)
     print("Сравнили цену товара")
+
+@pytest.mark.xfail
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.adding_a_book_to_basket()
+    page.should_not_be_success_message()            # проверка, что сообщение об успехе не отображается после добавления товара
+
+def test_guest_cant_see_success_message(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.should_not_be_success_message()            # проверка, что сообщение об успехе не отображается до добавления товара
+
+@pytest.mark.xfail
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.adding_a_book_to_basket()
+    page.should_disappeared()                       # проверка, что сообщение об успехе исчезает после добавления товара

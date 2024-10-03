@@ -1,13 +1,15 @@
-from jinja2.nodes import Import
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from .locators import MainPageLocators, ProductPageLocators
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
-from .locators import MainPageLocators
 from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import TimeoutException
 import math
 import time
 
 class BasePage():
-    def __init__(self, browser, url, timeout=10):
+    def __init__(self, browser, url, timeout=0):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
@@ -15,7 +17,7 @@ class BasePage():
     def open(self):
         self.browser.get(self.url)
 
-    def is_element_present(self, selector, s):
+    def is_element_present(self):
         try:
             self.browser.find_element(*MainPageLocators.LOGIN_LINK)
         except NoSuchElementException:
@@ -38,4 +40,21 @@ class BasePage():
             alert.accept()
         except (NoAlertPresentException, TimeoutException):
             print("No second alert presented")
+        return True
+
+    def is_not_element_present(self, how, what, timeout=4):
+        #Проверяет, что элемент не появляется на странице в течение времени timeout
+        try:
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return True
+        return False
+
+    def is_disappeared(self, how, what, timeout=4):
+        #Проверяет, что элемент исчезает с страницы в течение времени timeout
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException). \
+                until_not(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return False
         return True

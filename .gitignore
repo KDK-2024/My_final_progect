@@ -1,20 +1,26 @@
-# Python cache files
+# Игнорируем папку IDE
+.idea/
+
+# Игнорируем кэш Python
 __pycache__/
 *.py[cod]
 
-# Environments
-.env
-.venv/
+# Игнорируем виртуальные окружения
 venv/
-env/
-env.bak/
-venv.bak/
 
-# IDEs
-# PyCharm
-.idea/
-*.iml
+# Игнорируем временные файлы и файлы, создаваемые ОС
+.DS_Store
+Thumbs.db
+*.log
+*.pot
 
-# Ignore Pytest cache
-.cache/
-pytest_cache/
+# Игнорируем файлы конфигурации
+*.env
+*.local
+
+# Игнорируем все, кроме тестов и нужного кода
+!test_*.py
+!conftest.py
+!requirements.txt
+!README.md
+!pages/

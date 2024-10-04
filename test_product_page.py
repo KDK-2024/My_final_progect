@@ -4,7 +4,7 @@ from pages.basket_page import BasketPage
 from pages.login_page import LoginPage
 from pages.product_page import ProductPage
 
-
+@pytest.mark.need_review
 @pytest.mark.parametrize('promo_number', ["0", "1", "2", "3", "4", "5",
                                           "6", pytest.param("7", marks=pytest.mark.xfail), "8", "9"])
 def test_guest_can_add_product_to_basket(browser, promo_number):
@@ -12,17 +12,11 @@ def test_guest_can_add_product_to_basket(browser, promo_number):
     page = ProductPage(browser, link)       # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес
     page.open()                             # открываем страницу
     product_name = page.get_product_name()
-    print("Получили имя")
     product_price = page.get_product_price()
-    print("Получили цену")
     page.adding_a_book_to_basket()
-    print("Добавили товар в корзину")
     page.solve_quiz_and_get_code()
-    print("Решили задачу")
     page.should_be_correct_product(product_name)
-    print("Сравнили имя товара")
     page.should_be_correct_price(product_price)
-    print("Сравнили цену товара")
 
 @pytest.mark.xfail
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
@@ -50,23 +44,19 @@ def test_guest_should_see_login_link_on_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()                                     #Открываем страницу
-    print("Открыли страницу")
-    page.should_be_login_link()                     #Проверка наличия кнокпи для перехода на строницу логина
-    print("Проверили наличие кнопки")
+    page.should_be_login_link()                     #Проверка наличия кнопки для перехода на страницу логина
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()                                     # Открываем страницу
-    print("Открыли страницу")
-    page.should_be_login_link()                     # Проверка наличия кнопки для перехода на строницу логина
-    print("Проверили наличие кнопки")
-    page.go_to_login_page()                         # Переход на строницу логина
-    print("Перешли на страницу логина")
+    page.should_be_login_link()                     # Проверка наличия кнопки для перехода на страницу логина
+    page.go_to_login_page()                         # Переход на страницу логина
     login_page = LoginPage(browser, browser.current_url)
     login_page.should_be_login_page()               # Проверка, перешли на страницу логина
-    print("Проверили, что страница верная")
 
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
@@ -86,20 +76,16 @@ class TestUserAddToBasketFromProductPage():
         password = str(time.time()) + "12345!"
         page.register_new_user(email, password)                     # Регистрируем нового пользователя
         page.should_be_authorized_user()                            # Проверяем, что пользователь авторизован
+    @pytest.mark.need_review
     def test_user_can_add_product_to_basket(self, browser):
         link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
         page = ProductPage(browser, link)                   # Создаем объект ProductPage
         page.open()                                         # Открываем страницу товара
         product_name = page.get_product_name()
-        print("Получили имя")
         product_price = page.get_product_price()
-        print("Получили цену")
         page.adding_a_book_to_basket()
-        print("Добавили товар в корзину")
         page.should_be_correct_product(product_name)
-        print("Сравнили имя товара")
         page.should_be_correct_price(product_price)
-        print("Сравнили цену товара")
 
     def test_user_cant_see_success_message(self, browser):
         link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"

@@ -4,7 +4,7 @@ from .locators import ProductPageLocators, BasePageLocators
 
 class ProductPage(BasePage):
     def adding_a_book_to_basket(self):
-        basket_button = self.browser.find_element(*BasePageLocators.BASKET_BUTTON)
+        basket_button = self.browser.find_element(*ProductPageLocators.BASKET_BUTTON)
         basket_button.click()
 
     def get_product_name(self):
